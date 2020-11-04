@@ -24,6 +24,8 @@ class ServiceProvider implements ServiceProviderInterface
                     'client_id' => $app['config']['corp_id'],
                     'client_secret' => null,
                     'redirect' => $this->prepareCallbackUrl($app),
+                    'corp_id'   => $app['config']['corp_id'],
+                    'corp_secret'=> $app['config']['secret']
                 ],
             ], $app));
 
