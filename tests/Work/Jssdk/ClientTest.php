@@ -77,14 +77,14 @@ class ClientTest extends TestCase
             'ticket' => 'mock-ticket',
             'expires_in' => 7200,
         ];
-        $cacheKey = 'easywechat.work.jssdk.ticket.agent_config.mock-corp-id';
+        $cacheKey = 'easywechat.work.jssdk.ticket.100023.agent_config.mock-corp-id';
 
         // no refresh and cached
         $cache->expects()->has($cacheKey)->andReturn(true);
         $cache->expects()->get($cacheKey)->andReturn($ticket);
         $client->allows()->getCache()->andReturn($cache);
 
-        $this->assertSame($ticket, $client->getAgentTicket());
+        $this->assertSame($ticket, $client->getAgentTicket(100023));
 
         $response = new Response(200, [], json_encode($ticket));
 
@@ -97,7 +97,7 @@ class ClientTest extends TestCase
             ->requestRaw('cgi-bin/ticket/get', 'GET', ['query' => ['type' => 'agent_config']])
             ->andReturn($response);
 
-        $this->assertSame($ticket, $client->getAgentTicket());
+        $this->assertSame($ticket, $client->getAgentTicket(100023));
 
         // with refresh and cached
         $cache->expects()->has($cacheKey)->andReturn(true);
@@ -108,7 +108,7 @@ class ClientTest extends TestCase
             ->requestRaw('cgi-bin/ticket/get', 'GET', ['query' => ['type' => 'agent_config']])
             ->andReturn($response);
 
-        $this->assertSame($ticket, $client->getAgentTicket(true));
+        $this->assertSame($ticket, $client->getAgentTicket(100023, true));
     }
 
     public function testBuildAgentConfig()
